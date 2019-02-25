@@ -39,12 +39,10 @@ export default class SelectionPanel {
     this.emptyDetails();
 
     state.watch("selectedTrailId", (id) => {
+      this.emptyDetails();
       if (id) {
         const selectedTrail = this.trails.filter((trail) => { return trail.id === id; })[0];
         this.displayInfo(selectedTrail);
-      }
-      else {
-        this.emptyDetails();
       }
     });
 
@@ -74,34 +72,41 @@ export default class SelectionPanel {
 
   displayInfo(trail: Trail): void {
 
-    // create title
     this.detailTitle.innerHTML = trail.name;
-
-    // create infograph
     this.createInfograph(trail);
-
-    // create the description container
-    this.detailDescription.innerHTML = trail.description;
+    this.detailDescription.innerHTML = `<b>Particularities: </b> ${ trail.description }`;
 
     // create the elevation profile
-    this.createChart(trail.profileData);
+    if (trail.profileData) {
+      this.createChart(trail.profileData);
+    } else {
+      if (this.state.online) {
+        trail.setElevationValuesFromService()
+          .then(() => {
+            this.createChart(trail.profileData);
+          });
+      }
+    }
   }
 
   createInfograph(trail) {
 
-    const status = [{
-      icon: "fa fa-calendar-times-o",
-      text: "Closed"
-    }, {
-      icon: "fa fa-calendar-check-o",
-      text: "Open"
-    }];
+    const status = {
+      Closed: {
+        icon: "fa fa-calendar-times-o",
+        text: "Closed"
+      },
+      Open: {
+        icon: "fa fa-calendar-check-o",
+        text: "Open"
+      }
+    };
 
     this.detailInfograph.innerHTML = `
-      <span class="infograph"><span class="fa fa-line-chart" aria-hidden="true"></span> ${trail.ascent} m</span>
-      <span class="infograph"><span class="fa fa-wrench" aria-hidden="true"></span> ${trail.difficulty}</span>
-      <span class="infograph"><span class="fa fa-clock-o" aria-hidden="true"></span> ${trail.walktime} hr</span>
-      <span class="infograph"><span class="${status[trail.status].icon}" aria-hidden="true"></span> ${status[trail.status].text}</span>
+      ${trail.ascent ? `<span class="infograph"><span class="fa fa-line-chart" aria-hidden="true"></span> ${trail.ascent} m</span>` : ""}
+      ${trail.difficulty ? `<span class="infograph"><span class="fa fa-wrench" aria-hidden="true"></span> ${trail.difficulty}</span>` : ""}
+      ${trail.walktime ? `<span class="infograph"><span class="fa fa-clock-o" aria-hidden="true"></span> ${trail.walktime} hr</span>` : ""}
+      ${trail.status ? `<span class="infograph"><span class="${status[trail.status].icon}" aria-hidden="true"></span> ${status[trail.status].text}</span>` : ""}
     `;
 
   }

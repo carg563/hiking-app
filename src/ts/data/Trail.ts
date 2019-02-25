@@ -1,36 +1,61 @@
 import config from "../config";
 import * as Polyline from "esri/geometry/Polyline";
 import * as geometryEngine from "esri/geometry/geometryEngine";
+import * as Deferred from "dojo/Deferred";
+import State from "../State";
 
 import FlickrLayer from "../scene/FlickrLayer";
+
+
 
 export default class Trail {
 
   geometry: Polyline;
+  elevationIsSet;
   profileData: Array<any>;
   flickrLayer: FlickrLayer;
+  segments: any;
+  state: State;
 
-  constructor(feature) {
+  constructor(feature, state) {
 
     this.geometry = feature.geometry;
-
+    this.state = state;
+    this.elevationIsSet = null;
     // add attribute data based on the mapping in the configuration file
     const attributeMap = config.data.trailAttributes;
     for (const prop in attributeMap) {
       this[prop] = feature.attributes[attributeMap[prop]];
     }
 
-    let segments;
-    [this.profileData, segments] = this.getProperties(feature.geometry);
-    this.flickrLayer = new FlickrLayer(segments);
   }
 
-  private getProperties(geometry: Polyline): Array<any> {
+  setElevationValuesFromService() {
+    if (!this.elevationIsSet) {
+      this.elevationIsSet = new Deferred();
+      const elevationLayer = this.state.view.map.ground.layers.getItemAt(0);
+      elevationLayer.queryElevation(this.geometry, {
+        demResolution: "finest-contiguous"
+      }).then((response) => {
+          this.geometry = (<Polyline> response.geometry);
+          [this.profileData, this.segments] = this.getProperties();
+          this.elevationIsSet.resolve(1);
+        });
+    }
+    return this.elevationIsSet.promise;
+  }
+
+  public createFlickrLayer() {
+    this.flickrLayer = new FlickrLayer();
+    return this.flickrLayer.loadImages(this.segments);
+  }
+
+  private getProperties(): Array<any> {
 
     const points = [];
     let totalLength = 0;
     let segmentLength = 0;
-    const path = geometry.paths[0];
+    const path = this.getLongestPath();
     const segments = [path[0]];
     let i = 0, j;
 
@@ -50,7 +75,7 @@ export default class Trail {
           }
         }
 
-        if (length > 10) {
+        if (length > 150) {
           totalLength += length;
           points.push({ point: path[j], length: Math.round(totalLength / 100) / 10, value: Math.round(path[i][2]) });
           break;
@@ -59,6 +84,20 @@ export default class Trail {
       i = j;
     }
     return [points, segments];
+  }
+
+  private getLongestPath(): number[][] {
+    let longestPath = null;
+    let maxPathLength = 0;
+    for (const path of this.geometry.paths) {
+      const length = this.computeLength(path);
+      if (length > maxPathLength) {
+        maxPathLength = length;
+        longestPath = path;
+      }
+    }
+
+    return longestPath;
   }
 
   private computeLength(path: number[][]): number {

@@ -4,7 +4,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-size: 14px;
+  font-size: 16px;
   font-family: 'Open Sans Condensed', sans-serif;
   color: $font-color;
   overflow: hidden;
@@ -56,6 +56,10 @@ h1 {
 
   .fa-github-square:hover {
     color: $font-color;
+  }
+
+  .twitter-share-button {
+    margin-top: 3px;
   }
 }
 
@@ -164,4 +168,8 @@ h1 {
 
 .offline {
   background-color: rgba(241, 189, 183, 0.9);
+}
+
+b {
+  font-weight: 700;
 }

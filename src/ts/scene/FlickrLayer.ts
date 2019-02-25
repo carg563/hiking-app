@@ -12,6 +12,8 @@ import * as IconSymbol3DLayer from "esri/symbols/IconSymbol3DLayer";
 import * as all from "dojo/promise/all";
 import * as Deferred from "dojo/Deferred";
 
+import config from "../config";
+
 function setImages(layer) {
   const promises = [];
   const photos = layer.photoList;
@@ -19,7 +21,7 @@ function setImages(layer) {
     const photo = photos[i];
     promises.push(esriRequest(`https://api.flickr.com/services/rest/?
       method=flickr.photos.geo.getLocation&
-      api_key=d2eeadac35a3dfc3fb64a92e7c792de0&
+      api_key=${config.flickrApiKey}&
       photo_id=${photo.getAttribute("id")}`,
       { responseType: "xml" }));
   }
@@ -37,11 +39,7 @@ function setImages(layer) {
         const billboard = new PointSymbol3D({
           symbolLayers: [new IconSymbol3DLayer({
             size: 50,
-            resource: { href: imgUrl },
-            outline: {
-              color: "white",
-              size: "5px"
-            }
+            resource: { href: imgUrl }
           })],
           verticalOffset: {
             screenLength: 50,
@@ -89,7 +87,7 @@ export default class FlickrLayer extends FeatureLayer {
   photoList: any[] = [];
   imagesLoaded: boolean = false;
 
-  constructor(wayPoints) {
+  constructor() {
     super({
       elevationInfo: {
         mode: "relative-to-scene"
@@ -111,49 +109,14 @@ export default class FlickrLayer extends FeatureLayer {
       },
       renderer: new UniqueValueRenderer({
         field: "ObjectID",
-        defaultSymbol: new PointSymbol3D({
-          symbolLayers: [new IconSymbol3DLayer({
-            size: 40,
-            resource: { primitive: "circle" },
-            outline: {
-              color: "white",
-              size: "5px"
-            }
-          })]
-        })
+        defaultSymbol: new PointSymbol3D()
       })
     });
 
-    esriConfig.request.corsEnabledServers.push("https://api.flickr.com/");
 
-    for (let i = 1; i <= 9; i++) {
-      esriConfig.request.corsEnabledServers.push(`https://farm${i}.staticflickr.com/`);
-    }
-
-    const requests = [];
-    const radius = 0.5;
-
-    wayPoints.forEach((point) => {
-      const url = `https://api.flickr.com/services/rest/?
-        method=flickr.photos.search&api_key=d2eeadac35a3dfc3fb64a92e7c792de0&privacy_filter=1&accuracy=16
-        &has_geo=true&lon=${point[0]}&lat=${point[1]}&radius=${radius}
-        &per_page=1
-        &content_type=1
-        &license=1,2,3,4,5,6,7,8,9`;
-      requests.push(esriRequest(url, { responseType: "xml" }));
-    });
-
-    all(requests).then((results) => {
-      results.forEach((result) => {
-        const photo = result.data.getElementsByTagName("photo");
-        if (photo.length > 0) {
-          this.photoList.push(photo[0]);
-        }
-      });
-    });
   }
 
-  public loadImages() {
+  public loadImages(wayPoints) {
     if (this.imagesLoaded) {
       //create a fake promise
       const deferred = new Deferred();
@@ -162,7 +125,36 @@ export default class FlickrLayer extends FeatureLayer {
     }
     else {
       this.imagesLoaded = true;
-      return setImages(this);
+      esriConfig.request.corsEnabledServers.push("https://api.flickr.com/");
+
+      for (let i = 1; i <= 9; i++) {
+        esriConfig.request.corsEnabledServers.push(`https://farm${i}.staticflickr.com/`);
+      }
+
+      const requests = [];
+      const radius = 0.5;
+
+      wayPoints.forEach((point) => {
+        const url = `https://api.flickr.com/services/rest/?
+          method=flickr.photos.search&api_key=d2eeadac35a3dfc3fb64a92e7c792de0&privacy_filter=1&accuracy=16
+          &has_geo=true&lon=${point[0]}&lat=${point[1]}&radius=${radius}
+          &per_page=1
+          &content_type=1
+          &license=2,3,4,5,6,7,8,9`;
+        requests.push(esriRequest(url, { responseType: "xml" }));
+      });
+
+      return all(requests).then((results) => {
+        results.forEach((result) => {
+          const photo = result.data.getElementsByTagName("photo");
+          if (photo.length > 0) {
+            this.photoList.push(photo[0]);
+          }
+        });
+      })
+      .then(() => {
+        return setImages(this);
+      });
     }
 
   }

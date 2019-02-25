@@ -4,16 +4,13 @@ declare const serviceWorkerOption: {
   assets: string[];
 };
 
-const CACHE_NAME = "hiking-trails-v2";
+const CACHE_NAME = "hiking-trails-v6";
 
 function generateAssets(): Asset[] {
   const assets: Asset[] = [];
 
   generateAppResources(assets);
   generateRootResources(assets);
-  // generateAPIResources(assets);
-  // generateBasemapResources(assets);
-  // generateGroundResources(assets);
 
   return assets;
 }
@@ -32,81 +29,11 @@ function generateRootResources(assets: Asset[]) {
   assets.push(`${root}/index.html`);
   assets.push(`${root}/manifest.json`);
   assets.push(`${root}/src/img/esri-10GlobeLogo_1C.png`);
+  assets.push(`${root}/src/img/background.jpg`);
 }
-/*
-function generateAPIResources(assets: Asset[]) {
-  const resources = [
-    "dojo/dojo.js",
-    "dojo/nls/dojo_en-us.js",
-    "esri/views/SceneView.js",
-    "esri/WebScene.js",
-    "esri/views/nls/SceneView_en-us.js",
-    "dojo/resources/blank.gif",
-    "esri/workers/mutableWorker.js",
-    "esri/workers/indexWorker.js",
-    "esri/workers/scripts/helpers.js",
-    "esri/workers/scripts/indexInterface.js",
-    "esri/workers/libs/rtree.js",
-    "esri/geometry/geometryEngine.js",
-    "esri/layers/GraphicsLayer.js",
-    "esri/layers/support/ElevationQuery.js",
-    "esri/portal/support/layersLoader.js",
-    "esri/views/layers/GroupLayerView.js",
-    "esri/views/3d/webgl-engine/lib/SmaaRenderPassData.js",
-    "esri/layers/support/ElevationTile.js",
-    "esri/views/3d/layers/TileLayerView3D.js",
-    "esri/css/main.css",
-    "esri/themes/base/icons/fonts/CalciteWebCoreIcons.ttf?cu4poq",
-    "esri/themes/base/fonts/avenir-next/Avenir_Next_W00_400.woff2",
-    "esri/views/3d/environment/resources/stars.wsv"
-  ];
 
-  assets.push("https://jsdev.arcgis.com/4.7/");
+const imageryDomain = "services.arcgisonline.com";
 
-  for (const resource of resources) {
-    assets.push(`https://jsdev.arcgis.com/4.7/${resource}`);
-  }
-} */
-
-  const imageryDomain = "services.arcgisonline.com";
-// const imageryDomain = "wtb.maptiles.arcgis.com";
-/*
- function generateTileResources(serverUrl: string, numLevels: number, assets: Asset[]) {
-   assets.push(`${serverUrl}?f=json`);
-
-   for (let i = 12; i < numLevels; i++) {
-     const n = 1 << i;
-
-     assets.push(`${serverUrl}/tilemap/${i}/0/0/32/32`);
-
-     for (let x = 0; x < n; x++) {
-       for (let y = 0; y < n; y++) {
-         assets.push(`${serverUrl}/tile/${i}/${x}/${y}`);
-       }
-     }
-   }
- } */
-/*
- function generateBasemapResources(assets: Asset[]) {
-   const serverUrl = `https://${imageryDomain}/ArcGIS/rest/services/World_Imagery/MapServer`;
-   const cachedLevels = 18;
-
-   generateTileResources(serverUrl, cachedLevels, assets);
- }
-
- function generateGroundResources(assets: Asset[]) {
-   const serverUrl = "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer";
-   const cachedLevels = 18;
-
-   generateTileResources(serverUrl, cachedLevels, assets);
- } */
-
- /* function generatePortalResources(assets: Asset[]) {
-   assets.push(
-     "https://www.arcgis.com/sharing/rest/portals/self?f=json&culture=en-us"
-   );
- }
- */
 self.addEventListener("install", (event: any) => {
   console.log("install");
   event.waitUntil(
