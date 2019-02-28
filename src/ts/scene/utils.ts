@@ -8,7 +8,7 @@ import * as TextSymbol3DLayer from "esri/symbols/TextSymbol3DLayer";
 
 export function getTrailRenderer(): UniqueValueRenderer {
   return new UniqueValueRenderer({
-    field: config.data.trailAttributes.id,
+    field: config.data.trailAttributes.name,
     defaultSymbol: createTrailSymbol({
       selection: null
     }),
@@ -98,7 +98,7 @@ export function createLabelClass(options) {
     }
   });
   if (options.selection) {
-    labelClass.where = `${config.data.trailAttributes.id} = ${options.selection}`;
+    labelClass.where = `${config.data.trailAttributes.name} = ${options.selection}`;
   }
 
   return labelClass;

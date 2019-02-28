@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\ts",
+    "\\src\\ts\\data",
+    "\\src\\ts\\scene",
+    "\\src\\ts\\ui"
+  ],
+  "SelectedNode": "\\webpack.config.js",
+  "PreviewInSolutionExplorer": false
+}

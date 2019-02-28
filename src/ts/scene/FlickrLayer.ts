@@ -132,15 +132,15 @@ export default class FlickrLayer extends FeatureLayer {
       }
 
       const requests = [];
-      const radius = 0.5;
+      const radius = 0.1;
 
       wayPoints.forEach((point) => {
-        const url = `https://api.flickr.com/services/rest/?
-          method=flickr.photos.search&api_key=d2eeadac35a3dfc3fb64a92e7c792de0&privacy_filter=1&accuracy=16
+          const url = `https://api.flickr.com/services/rest/?
+          method=flickr.photos.search&api_key=28729577c128457844baf00993fdd94e&privacy_filter=1&accuracy=16
           &has_geo=true&lon=${point[0]}&lat=${point[1]}&radius=${radius}
           &per_page=1
-          &content_type=1
-          &license=2,3,4,5,6,7,8,9`;
+          &content_type=1`;
+         
         requests.push(esriRequest(url, { responseType: "xml" }));
       });
 

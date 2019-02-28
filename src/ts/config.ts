@@ -25,27 +25,28 @@ Colors:
 
 export default {
   scene: {
-    websceneItemId: "d0580bb5df3840d384bda44b6ddeb54e"
+      websceneItemId: "c4607630d50b416395dbde8fa0f8ec20"
   },
   data: {
-    trailsServiceUrl: "https://services2.arcgis.com/cFEFS0EWrhfDeVw9/arcgis/rest/services/SwissNationalParkTrails/FeatureServer/0",
-    trailAttributes: {
-      name: "Name",
-      id: "RouteId",
-      difficulty: "Difficulty",
-      walktime: "Hiketime",
-      status: "Access",
-      ascent: "Ascent",
-      description: "Description"
+      trailsServiceUrl: "https://services3.arcgis.com/imPqQAKxFWzdtlWr/arcgis/rest/services/RingOfFire/FeatureServer/0",
+      trailAttributes: {
+          id: "OBJECTID",
+          name: "LegName",
+          distance: "distance",
+          gain: "elevationGain",
+          loss: "elevationLoss",
+          description: "description",
+          summary: "summary",
+          video: "video"
     },
     filterOptions: {
-      singleChoice: ["difficulty", "status"], // have string values
-      range: ["walktime", "ascent"] // have numeric values
+      singleChoice: [], // have string values
+      range: [] // have numeric values
     }
   },
   colors: {
     defaultTrail: "#db5353",
-    selectedTrail: "#f9a352"
+      selectedTrail: "#B12216"
   },
-  flickrApiKey: ""
+    flickrApiKey: "28729577c128457844baf00993fdd94e"
 };

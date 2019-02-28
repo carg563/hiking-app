@@ -27,7 +27,7 @@ export default class Trail {
     for (const prop in attributeMap) {
       this[prop] = feature.attributes[attributeMap[prop]];
     }
-
+      
   }
 
   setElevationValuesFromService() {
@@ -67,23 +67,24 @@ export default class Trail {
         const length = this.computeLength(path.slice(i, j + 1));
 
         segmentLength += length;
-        if (segmentLength > 2000) {
-          const distance = this.computeLength([segments[segments.length - 1], path[j]]);
-          if (distance > 1000) {
-            segments.push(path[j]);
-            segmentLength = 0;
-          }
-        }
+        //if (segmentLength > 2000) {
+        //  const distance = this.computeLength([segments[segments.length - 1], path[j]]);
+        //  if (distance > 1000) {
+        //    segments.push(path[j]);
+        //    segmentLength = 0;
+        //  }
+        //}
 
         if (length > 150) {
-          totalLength += length;
+            totalLength += length;
+            segments.push(path[j]);
           points.push({ point: path[j], length: Math.round(totalLength / 100) / 10, value: Math.round(path[i][2]) });
           break;
         }
       }
       i = j;
     }
-    return [points, segments];
+      return [points, segments];
   }
 
   private getLongestPath(): number[][] {

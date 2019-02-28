@@ -1,44 +1,49 @@
 @import 'variables';
 
 #trailsPanel {
-  margin-bottom: 10px;
-  display: flex;
-  flex-wrap: wrap;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: Tahoma, Geneva, sans-serif;
+    text-transform: none;
 
-  .trail {
-    background-color: $green;
-    border: 1px solid $green;
-    margin: 5px 5px 5px 0;
-    cursor: pointer;
-    pointer-events: auto;
-    padding: 4px 8px;
-    font-size: $normal-font;
+    .trail {
+        width: 25%;
+        text-align: center;
+        background-color: #FFFFFF;
+        border: 1px solid #FFFFFF;
+        margin: 5px 5px 5px 0;
+        cursor: pointer;
+        pointer-events: auto;
+        padding: 4px 8px;
+        font-size: 14px;
 
-    &.disabled {
-      cursor: default;
-      background-color: white;
-      border: 1px solid $disabled-gray;
-      color: $disabled-gray;
-      pointer-events: none;
+        &.disabled {
+            cursor: default;
+            background-color: white;
+            border: 1px solid $disabled-gray;
+            color: $disabled-gray;
+            pointer-events: none;
+        }
+
+        &.disabled:hover {
+            cursor: default;
+            border: 1px solid $disabled-gray;
+            color: $disabled-gray;
+        }
+
+        &.selected {
+            background-color: $red;
+            border: 1px solid $red;
+            color: white;
+        }
     }
 
-    &.disabled:hover {
-      cursor: default;
-      border: 1px solid $disabled-gray;
-      color: $disabled-gray;
+    .trail:hover {
+        background-color: $red;
+        border: 1px solid $red;
+        color: #FFFFFF
     }
-
-    &.selected {
-      background-color: $orange;
-      border: 1px solid $orange;
-    }
-  }
-
-  .trail:hover {
-    background-color: $orange;
-    border: 1px solid $orange;
-  }
-
 }
 
 .removeSelected {

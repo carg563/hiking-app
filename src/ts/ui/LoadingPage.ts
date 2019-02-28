@@ -22,9 +22,9 @@ export default class LoadingPage {
       }
     });
 
-
     on(dom.byId("showMap"), "click", () => {
-      state.displayLoading = false;
+        state.displayLoading = false;
+        
     });
   }
 }

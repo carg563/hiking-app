@@ -6,7 +6,7 @@ function getMedia(): Device  {
   if (mqDesktop.matches) {
     return "desktop";
   }
-  return "mobilePortrait";
+    return "mobilePortrait";
 }
 
 export default {

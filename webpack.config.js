@@ -62,8 +62,8 @@ module.exports = {
   plugins: [
     new ServiceWorkerWebpackPlugin({
       entry: path.join(__dirname, 'src/ts/sw.ts'),
-      filename: '../sw.js',
-      publicPath: '/hiking-app/dist/'
+      filename: './sw.js',
+      publicPath: '/'
     }),
     new TSLintPlugin({
       files: ['./src/ts/**/*.ts']

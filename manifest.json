@@ -1,7 +1,8 @@
 {
-  "short_name": "Hiking app",
-  "name": "Hiking app Swiss National Park",
-  "icons": [{
+  "short_name": "Ring of Fire 3D",
+  "name": "Ring of Fire 3D",
+  "icons": [
+    {
       "src": "src/img/android-icon-36x36.png",
       "sizes": "36x36",
       "type": "image/png"
