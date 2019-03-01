@@ -38,6 +38,18 @@
     <link rel='stylesheet' href='https://js.arcgis.com/4.7/esri/css/main.css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet'>
     <link rel='stylesheet' type="text/css" href='dist/main.css'>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135441573-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-135441573-1');
+    </script>
+
+
 </head>
 
 <body>
@@ -71,7 +83,7 @@
 
         <div id='detailPanel' class='panel invisible'>
             <div id='trailsPanel'></div>
-            <h1 class='center'  style="display:none" id='detailTitle'></h1>
+            <div class="center" style="text-align:center; text-transform:none" id='detailTitle'></div>
             <div id='detailInfograph'></div>
             <div id='detailDescription'></div>
             <div id='detailElevationProfile'></div>

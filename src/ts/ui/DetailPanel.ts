@@ -66,14 +66,14 @@ export default class SelectionPanel {
 
     displayAppInfo() {
         if (this.state.device === "mobilePortrait") {
-            this.detailInfograph.innerHTML = "This app shows the legs in the Ring of Fire Ultra. Select a leg on the map to find out more about it.";
+            this.detailTitle.innerHTML = "This app shows the legs in the Ring of Fire Ultra. Select a leg on the map to find out more about it.";
         } else {
-            this.detailInfograph.innerHTML = "Select a leg above to see more details about it.";
+            this.detailTitle.innerHTML = "Select a leg above to see more details about it.";
         }
     }
 
     setScene(trail: Trail) {
-
+        domConstruct.empty(this.detailTitle);
         for (var i = 0; i < this.state.slides.length ; i++) {
             var slide = this.state.slides.items[i];
             if (slide.title.text.toLowerCase() === trail.name.toLowerCase()) {
